@@ -1,0 +1,9 @@
+.nav {
+    background-color: var(--yellow);
+    background: linear-gradient(.25turn, yellow, 15%, lightblue);
+}
+
+#page-title {
+    font-size: 80px;
+    color: white;
+}
