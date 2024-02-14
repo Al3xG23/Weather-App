@@ -14,25 +14,48 @@
 <body>
     <nav class="nav justify-content-center w-auto p-5">
         <div class="container-fluid text-center fs-1">
-            <h1 id="page-title">Travel Weather</h1>
+            <h1 class="page-title">Travel Weather</h1>
         </div>
     </nav>
     <!-- container for the search area -->
-    <div id="search">
+    <div class="card d-flex flex-row" style="height: 700px">
+        <div id="search-side" class="card" style="width: 20rem">
+            <div id="search" class="card-body h-25">
+                <h2 class="card-header">Search Your City</h2>
+                <form>
+                    <input type="text" class="form-control" placeholder="Enter City Name" style="margin-top: 14px;">
+                    <div class="d-flex justify-content-center">
+                        <button id="search-btn">Search</button>
+                    </div>
+                </form>
+            </div>
 
+            <!--container for the saved cities-->
+            <div id="saved-cities" class="card-body h-75">
+                <h2 class="card-header">Saved Cities</h2>
+                <ul id="cities-list"></ul>
+            </div>
+        </div>
+
+        <!--container for the weather-->
+        <div class="card d-flex" style="width: 100rem">
+            <div id="weather" class="card-body">
+                <div class="card" style="height: 300px">
+
+                </div>
+                <h3 class="card-header" style="margin-top: 14px; margin-bottom: 14px;">5-Day Forecast:</h3>
+                <div class="card" style="height: 300px">
+
+                </div>
+            </div>
+        </div>
     </div>
-    <!--container for the saved cities-->
-    <div id="cities">
-
-    </div>
-    <!--container for the weather-->
-    <div id="weather">
-
-    </div>
 
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-    <script src="./assets/js/script.js"></script>    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+    <script src="./assets/js/script.js"></script>
 </body>
+
 </html>
