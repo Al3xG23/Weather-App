@@ -15,14 +15,20 @@
     border-bottom: 5px solid #458b74;    
    }
 
-#search-btn {
+#city-entered {
+    margin-top: 14px;
+}
+
+#submit {
     padding-left: 50px; 
     padding-right: 50px; 
     padding-top: 5px; 
     padding-bottom: 5px; 
     margin-top: 18px;
+    margin-left: 60px;
 }
 
-.footer {    
+#footer {    
     background: linear-gradient(.25turn, yellow, 15%, lightblue);
+    justify-content: center;
 }
