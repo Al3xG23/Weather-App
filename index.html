@@ -20,12 +20,12 @@
     <!-- container for the search area -->
     <div class="card d-flex flex-row" style="height: 700px">
         <div id="search-side" class="card" style="width: 20rem">
-            <div id="search" class="card-body h-25">
+            <div id="search1" class="card-body h-25">
                 <h2 class="card-header">Search Your City</h2>
                 <form>
-                    <input id="user-city" type="text" class="form-control" placeholder="Enter City Name">
+                    <input id="user-city" type="text" required class="form-control" placeholder="Enter City Name">
+                    <div id="errorMessage"></div>
                     <button class="d-flex justify-content-center" id="submit" onclick="cityEntered()">Search</button>
-
                 </form>
             </div>
 
@@ -38,11 +38,13 @@
         <!--container for the weather-->
         <div class="card d-flex" style="width: 100rem">
             <div id="weather" class="card-body">
-                <div class="card current-weather" style="height: 300px">
+                <h3 class="card-header" style="margin-top: 2px; margin-bottom: 14px;">Current Weather</h3>
+                <div id="current-weather" class="card" style="height: 250px">
+                    <ul></ul>
                     <!--current weather should propagate here-->
                 </div>
                 <h3 class="card-header" style="margin-top: 14px; margin-bottom: 14px;">5-Day Forecast:</h3>
-                <div class="card five-day" style="height: 300px">
+                <div id="five-day" class="card" style="height: 300px">
                     <!--five day forecast-->
                 </div>
             </div>
