@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="stylesheet" href="./assets/reset.css">
+    <script
+      src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+      integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U="
+      crossorigin="anonymous"
+    ></script>
     <title>Travel Weather</title>
 </head>
 
@@ -39,7 +44,7 @@
         <!--container for the weather-->
         <div class="card d-flex" style="width: 100rem">
             <div id="weather" class="card-body">
-                <h3 class="card-header" style="margin-top: 2px; margin-bottom: 14px;">Current Weather</h3>
+                <h3 class="card-header" style="margin-top: 2px; margin-bottom: 14px">Current Weather</h3>
                 <div id="current-weather" class="card d-flex" style="height: 250px">
                     <!--current weather should propagate here-->
                     <div id="weather-title" class="d-flex flex-row">
@@ -47,12 +52,55 @@
                         <div id="weather-icon"></div>
                     </div>
                 </div>
-                <h3 class="card-header" style="margin-top: 14px; margin-bottom: 14px;">5-Day Forecast:</h3>
+                <h3 class="card-header" style="margin-top: 14px; margin-bottom: 14px">5-Day Forecast:</h3>
                 <div id="five-day" class="card" style="height: 300px">
                     <!--five day forecast-->
+                    <div class="row">
+                        <div class="col">
+                            <div class="card" style="height: 250px; margin-top: 25px">
+                                <div id="day0" class="card-body">
+                                    <div id="date0"></div>
+                                    <div id="five-weather-icon0"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card" style="height: 250px; margin-top: 25px">
+                                <div id="day1" class="card-body">
+                                    <div id="date1"></div>
+                                    <div id="five-weather-icon1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card" style="height: 250px; margin-top: 25px">
+                                <div id="day2" class="card-body">
+                                    <div id="date2"></div>
+                                    <div id="five-weather-icon2"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card" style="height: 250px; margin-top: 25px">
+                                <div id="day3" class="card-body">
+                                    <div id="date3"></div>
+                                    <div id="five-weather-icon3"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card" style="height: 250px; margin-top: 25px">
+                                <div id="day4" class="card-body">
+                                    <div id="date4"></div>
+                                    <div id="five-weather-icon4"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <div class="nav w-100% p-5 card-footer" id="footer">
