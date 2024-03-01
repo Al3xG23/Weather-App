@@ -1,6 +1,11 @@
 const WeatherAPIKey = "f714786d6279ec80d8a23eb995a5fb8e";
 const cityForm = document.getElementById("city-form");
 const currentWeather = document.getElementById("current-weather");
+const date = new Date();
+let day = date.getDate();
+let month = date.getMonth() + 1;
+let year = date.getFullYear();
+let todaysDate = month + "/" + day + "/" + year;
 
 // get user city input
 
@@ -11,11 +16,11 @@ async function cityEntered(event) {
     let userCity = cityForm.usercity.value;
     localStorage.setItem("userCity", userCity);
     const coordinates = await getGeoCode(userCity);
-    console.log(coordinates);
+    // console.log(coordinates);
     let latitude = coordinates[0].lat;
     let longitude = coordinates[0].lon;
     const current = await getCurrentWeather(latitude, longitude);
-    console.log(current);
+    // console.log(current);
     renderWeather(current);
     const fiveDay = await getFiveDay(latitude, longitude);
     console.log(fiveDay);
@@ -28,14 +33,13 @@ cityForm.addEventListener("submit", cityEntered);
 async function getGeoCode(city) {
     let cityUsed = city.replace(/\s/g, "%20");
     let convertCity = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityUsed + "&limit=5&appid=" + WeatherAPIKey;
-    console.log(cityUsed);
     let coordinates = (await fetch(convertCity)).json();
     return coordinates;
 };
 // get current weather
 
 async function getCurrentWeather(latitude, longitude) {
-    let getCurrent = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + WeatherAPIKey;
+    let getCurrent = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + WeatherAPIKey + "&units=imperial";
     const weatherNow = (await fetch(getCurrent)).json();
     return weatherNow;
 };
@@ -43,28 +47,54 @@ async function getCurrentWeather(latitude, longitude) {
 // show current weather city name, the date, an icon representation of weather conditions, the temperature, the humidity, and the wind speed
 
 function renderWeather(current) {
-    let cityName = current.name;
-    let description = current.weather[0].description;
+    let currentWeatherDiv = document.getElementById("current-weather");
+
+    let cityNameDiv = document.getElementById("city-name");
+    let cityName = document.createElement("p");
+    cityName.textContent = current.name + " (" + todaysDate + ")";
+    cityName.style.marginTop = "15px";
+    cityName.style.marginBottom = "15px";
+    cityName.style.fontSize = "x-large";
+    cityName.style.fontWeight = "bold";
+    
+    // show image
+    let weatherIconDiv = document.getElementById("weather-icon");
     let icon = current.weather[0].icon;
     let iconUrl = "https://openweathermap.org/img/wn/" + icon + "@2x.png";
-    let temperature = current.main.temp;
-    let feelsLike = current.main.feels_like;
-    let humidity = current.main.humidity;
-    let windspeed = current.wind.speed;
-    console.log("cityName:" + cityName);
-    console.log("description:" + description);
-    console.log("icon:" + icon);
-    console.log(iconUrl);
-    console.log("temperature:" + temperature);
-    console.log("feels like:" + feelsLike);
-    console.log("humidity:" + humidity);
-    console.log("windspeed:" + windspeed);    
+    let img = document.createElement("img");
+    img.src = iconUrl
+    img.style.width = "50px";
+    img.style.height = "50px";
+    
+    let description = document.createElement("p");
+    description.textContent = "Conditions: " + current.weather[0].description;
+
+    let temperature = document.createElement("p");
+    temperature.textContent = "Temperature: " + current.main.temp + "°F";
+
+    let feelsLike = document.createElement("p");
+    feelsLike.textContent = "Feels Like: " + current.main.feels_like + "°F";
+
+    let humidity = document.createElement("p");
+    humidity.textContent = "Humidity: " + current.main.humidity + "%";
+
+    let windspeed = document.createElement("p");
+    windspeed.textContent = "Wind: " + current.wind.speed + " MPH";
+
+    cityNameDiv.appendChild(cityName);
+    weatherIconDiv.appendChild(img);
+    currentWeatherDiv.appendChild(description);
+    currentWeatherDiv.appendChild(temperature);
+    currentWeatherDiv.appendChild(feelsLike);
+    currentWeatherDiv.appendChild(humidity);
+    currentWeatherDiv.appendChild(windspeed);
 };
 
 // get five day weather
 
 async function getFiveDay(latitude, longitude) {
-    let getFive = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + WeatherAPIKey;
+    let getFive = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + WeatherAPIKey + "&units=imperial";
+    console.log(getFive);
     const weatherFiveDay = (await fetch(getFive)).json();
     return weatherFiveDay;
 };
@@ -110,3 +140,19 @@ function renderFiveDayWeather(fiveDay) {
 // }
 
 // printSearches();
+
+// other way to show search history, need to play with it
+
+// var searchHistory = (localStorage.searchHistory) ? JSON.parse(localStorage.searchHistory) : [];
+// document.querySelector(".search").addEventListener("click", () => {
+//   searchHistory.push(document.querySelector(".usercity").value);
+//   localStorage.searchHistory = JSON.stringify(searchHistory);
+// });
+// document.querySelector(".usercity").addEventListener("focus", () => {
+//   var data = document.querySelector("datalist#searchdata");
+//   data.innerHTML = "";
+//   searchHistory.forEach((search) => {
+//     data.innerHTML = "<option>" + data.innerHTML;
+//     data.querySelector("option").innerText = search;
+//   });
+// });
