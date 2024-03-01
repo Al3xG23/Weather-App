@@ -55,7 +55,7 @@ function renderWeather(current) {
     cityName.textContent = current.name + " (" + todaysDate + ")";
     cityName.style.marginTop = "15px";
     cityName.style.marginBottom = "15px";
-    cityName.style.fontSize = "x-large";
+    cityName.style.fontSize = "xx-large";
     cityName.style.fontWeight = "bold";
 
     // show image
@@ -64,11 +64,12 @@ function renderWeather(current) {
     let iconUrl = "https://openweathermap.org/img/wn/" + icon + "@2x.png";
     let img = document.createElement("img");
     img.src = iconUrl;
-    img.style.width = "50px";
-    img.style.height = "50px";
+    img.style.width = "65px";
+    img.style.height = "65px";
+    img.style.marginLeft = "20px";
 
     let description = document.createElement("p");
-    description.textContent = "Conditions: " + current.weather[0].description;
+    description.textContent = "Conditions: " + current.weather[0].description;    
 
     let temperature = document.createElement("p");
     temperature.textContent = "Temperature: " + current.main.temp + "°F";
@@ -114,8 +115,8 @@ function renderFiveDayWeather(fiveDay) {
     let iconUrl0 = "https://openweathermap.org/img/wn/" + icon0 + "@2x.png";
     let img0 = document.createElement("img");
     img0.src = iconUrl0;
-    img0.style.width = "50px";
-    img0.style.height = "50px";
+    img0.style.width = "100px";
+    img0.style.height = "100px";
 
     let temp0 = document.createElement("p");
     temp0.textContent = "Temperature: " + fiveDay.list[0].main.temp + "°F";
@@ -137,8 +138,8 @@ function renderFiveDayWeather(fiveDay) {
     let iconUrl1 = "https://openweathermap.org/img/wn/" + icon1 + "@2x.png";
     let img1 = document.createElement("img");
     img1.src = iconUrl1;
-    img1.style.width = "50px";
-    img1.style.height = "50px";
+    img1.style.width = "100px";
+    img1.style.height = "100px";
 
     let temp1 = document.createElement("p");
     temp1.textContent = "Temperature: " + fiveDay.list[4].main.temp + "°F";
@@ -160,8 +161,8 @@ function renderFiveDayWeather(fiveDay) {
     let iconUrl2 = "https://openweathermap.org/img/wn/" + icon2 + "@2x.png";
     let img2 = document.createElement("img");
     img2.src = iconUrl2;
-    img2.style.width = "50px";
-    img2.style.height = "50px";
+    img2.style.width = "100px";
+    img2.style.height = "100px";
 
     let temp2 = document.createElement("p");
     temp2.textContent = "Temperature: " + fiveDay.list[12].main.temp + "°F";
@@ -183,8 +184,8 @@ function renderFiveDayWeather(fiveDay) {
     let iconUrl3 = "https://openweathermap.org/img/wn/" + icon3 + "@2x.png";
     let img3 = document.createElement("img");
     img3.src = iconUrl3;
-    img3.style.width = "50px";
-    img3.style.height = "50px";
+    img3.style.width = "100px";
+    img3.style.height = "100px";
     
     let temp3 = document.createElement("p");
     temp3.textContent = "Temperature: " + fiveDay.list[20].main.temp + "°F";
@@ -207,8 +208,8 @@ function renderFiveDayWeather(fiveDay) {
     let iconUrl4 = "https://openweathermap.org/img/wn/" + icon4 + "@2x.png";
     let img4 = document.createElement("img");
     img4.src = iconUrl4;
-    img4.style.width = "50px";
-    img4.style.height = "50px";
+    img4.style.width = "100px";
+    img4.style.height = "100px";
 
     let temp4 = document.createElement("p");
     temp4.textContent = "Temperature: " + fiveDay.list[28].main.temp + "°F";
