@@ -8,23 +8,23 @@ let year = date.getFullYear();
 let todaysDate = month + "/" + day + "/" + year;
 
 // get user city input
-
 // only grabbing the first city but would like to give the user the option to select the city they want if it's the same name but different location
+// need to clear pouplated after search so it doesn't overlap the second search
 
 async function cityEntered(event) {
     event.preventDefault();
     let userCity = cityForm.usercity.value;
-    localStorage.setItem("userCity", userCity);
     const coordinates = await getGeoCode(userCity);
     // console.log(coordinates);
     let latitude = coordinates[0].lat;
     let longitude = coordinates[0].lon;
     const current = await getCurrentWeather(latitude, longitude);
-    console.log(current);
+    // console.log(current);
     renderWeather(current);
     const fiveDay = await getFiveDay(latitude, longitude);
-    console.log(fiveDay);
+    // console.log(fiveDay);
     renderFiveDayWeather(fiveDay);
+    localStorage.setItem("city", userCity);      
 };
 cityForm.addEventListener("submit", cityEntered);
 
@@ -44,7 +44,6 @@ async function getCurrentWeather(latitude, longitude) {
     return weatherNow;
 };
 
-
 // show current weather city name, the date, an icon representation of weather conditions, the temperature, the humidity, and the wind speed
 
 function renderWeather(current) {
@@ -52,7 +51,8 @@ function renderWeather(current) {
 
     let cityNameDiv = document.getElementById("city-name");
     let cityName = document.createElement("p");
-    cityName.textContent = current.name + " (" + todaysDate + ")";
+    let city = current.name;
+    cityName.textContent = city + " (" + todaysDate + ")";
     cityName.style.marginTop = "15px";
     cityName.style.marginBottom = "15px";
     cityName.style.fontSize = "xx-large";
@@ -90,18 +90,21 @@ function renderWeather(current) {
     currentWeatherDiv.appendChild(feelsLike);
     currentWeatherDiv.appendChild(windspeed);
     currentWeatherDiv.appendChild(humidity);
+    localStorage.setItem("searchedCity", city);
 };
-
+let searchedCity = localStorage.getItem("searchedCity");
+console.log(searchedCity);
 // get five day weather
 
 async function getFiveDay(latitude, longitude) {
     let getFive = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + WeatherAPIKey + "&units=imperial";
-    console.log(getFive);
+    // console.log(getFive);
     const weatherFiveDay = (await fetch(getFive)).json();
     return weatherFiveDay;
 };
 
-// // show five day forecast the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
+// show five day forecast the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
+// I tried to do a loop for all this but abandoned that for the moment
 function renderFiveDayWeather(fiveDay) {
 
     // day 1
@@ -131,10 +134,10 @@ function renderFiveDayWeather(fiveDay) {
     let day1Div = document.getElementById("day1");
     let date1Div = document.getElementById("date1");
     let date1 = document.createElement("p");
-    date1.textContent = fiveDay.list[4].dt_txt;
+    date1.textContent = fiveDay.list[6].dt_txt;
 
     let fiveWeatherIconDiv1 = document.getElementById("five-weather-icon1");
-    let icon1 = fiveDay.list[4].weather[0].icon;
+    let icon1 = fiveDay.list[6].weather[0].icon;
     let iconUrl1 = "https://openweathermap.org/img/wn/" + icon1 + "@2x.png";
     let img1 = document.createElement("img");
     img1.src = iconUrl1;
@@ -142,22 +145,22 @@ function renderFiveDayWeather(fiveDay) {
     img1.style.height = "100px";
 
     let temp1 = document.createElement("p");
-    temp1.textContent = "Temperature: " + fiveDay.list[4].main.temp + "°F";
+    temp1.textContent = "Temperature: " + fiveDay.list[6].main.temp + "°F";
 
     let fiveWindspeed1 = document.createElement("p");
-    fiveWindspeed1.textContent = "Wind: " + fiveDay.list[4].wind.speed + " MPH";
+    fiveWindspeed1.textContent = "Wind: " + fiveDay.list[6].wind.speed + " MPH";
 
     let fiveHumidity1 = document.createElement("p");
-    fiveHumidity1.textContent = "Humidity: " + fiveDay.list[4].main.humidity + "%";
+    fiveHumidity1.textContent = "Humidity: " + fiveDay.list[6].main.humidity + "%";
 
     // day 3
     let day2Div = document.getElementById("day2");
     let date2Div = document.getElementById("date2");
     let date2 = document.createElement("p");
-    date2.textContent = fiveDay.list[12].dt_txt;
+    date2.textContent = fiveDay.list[15].dt_txt;
 
     let fiveWeatherIconDiv2 = document.getElementById("five-weather-icon2");
-    let icon2 = fiveDay.list[12].weather[0].icon;
+    let icon2 = fiveDay.list[15].weather[0].icon;
     let iconUrl2 = "https://openweathermap.org/img/wn/" + icon2 + "@2x.png";
     let img2 = document.createElement("img");
     img2.src = iconUrl2;
@@ -165,22 +168,22 @@ function renderFiveDayWeather(fiveDay) {
     img2.style.height = "100px";
 
     let temp2 = document.createElement("p");
-    temp2.textContent = "Temperature: " + fiveDay.list[12].main.temp + "°F";
+    temp2.textContent = "Temperature: " + fiveDay.list[15].main.temp + "°F";
 
     let fiveWindspeed2 = document.createElement("p");
-    fiveWindspeed2.textContent = "Wind: " + fiveDay.list[12].wind.speed + " MPH";
+    fiveWindspeed2.textContent = "Wind: " + fiveDay.list[15].wind.speed + " MPH";
 
     let fiveHumidity2 = document.createElement("p");
-    fiveHumidity2.textContent = "Humidity: " + fiveDay.list[12].main.humidity + "%";
+    fiveHumidity2.textContent = "Humidity: " + fiveDay.list[15].main.humidity + "%";
 
     // day 4
     let day3Div = document.getElementById("day3");
     let date3Div = document.getElementById("date3");
     let date3 = document.createElement("p");
-    date3.textContent = fiveDay.list[20].dt_txt;
+    date3.textContent = fiveDay.list[23].dt_txt;
 
     let fiveWeatherIconDiv3 = document.getElementById("five-weather-icon3");
-    let icon3 = fiveDay.list[20].weather[0].icon;
+    let icon3 = fiveDay.list[23].weather[0].icon;
     let iconUrl3 = "https://openweathermap.org/img/wn/" + icon3 + "@2x.png";
     let img3 = document.createElement("img");
     img3.src = iconUrl3;
@@ -188,23 +191,22 @@ function renderFiveDayWeather(fiveDay) {
     img3.style.height = "100px";
     
     let temp3 = document.createElement("p");
-    temp3.textContent = "Temperature: " + fiveDay.list[20].main.temp + "°F";
+    temp3.textContent = "Temperature: " + fiveDay.list[23].main.temp + "°F";
 
     let fiveWindspeed3 = document.createElement("p");
-    fiveWindspeed3.textContent = "Wind: " + fiveDay.list[20].wind.speed + " MPH";
+    fiveWindspeed3.textContent = "Wind: " + fiveDay.list[23].wind.speed + " MPH";
 
     let fiveHumidity3 = document.createElement("p");
-    fiveHumidity3.textContent = "Humidity: " + fiveDay.list[20].main.humidity + "%";
-
+    fiveHumidity3.textContent = "Humidity: " + fiveDay.list[23].main.humidity + "%";
 
     // day 5
     let day4Div = document.getElementById("day4");
     let date4Div = document.getElementById("date4");
     let date4 = document.createElement("p");
-    date4.textContent = fiveDay.list[28].dt_txt;
+    date4.textContent = fiveDay.list[32].dt_txt;
 
     let fiveWeatherIconDiv4 = document.getElementById("five-weather-icon4");
-    let icon4 = fiveDay.list[28].weather[0].icon;
+    let icon4 = fiveDay.list[32].weather[0].icon;
     let iconUrl4 = "https://openweathermap.org/img/wn/" + icon4 + "@2x.png";
     let img4 = document.createElement("img");
     img4.src = iconUrl4;
@@ -212,13 +214,13 @@ function renderFiveDayWeather(fiveDay) {
     img4.style.height = "100px";
 
     let temp4 = document.createElement("p");
-    temp4.textContent = "Temperature: " + fiveDay.list[28].main.temp + "°F";
+    temp4.textContent = "Temperature: " + fiveDay.list[32].main.temp + "°F";
 
     let fiveWindspeed4 = document.createElement("p");
-    fiveWindspeed4.textContent = "Wind: " + fiveDay.list[28].wind.speed + " MPH";
+    fiveWindspeed4.textContent = "Wind: " + fiveDay.list[32].wind.speed + " MPH";
 
     let fiveHumidity4 = document.createElement("p");
-    fiveHumidity4.textContent = "Humidity: " + fiveDay.list[28].main.humidity + "%";
+    fiveHumidity4.textContent = "Humidity: " + fiveDay.list[32].main.humidity + "%";
     
     // render all info
     date0Div.appendChild(date0);
@@ -226,7 +228,6 @@ function renderFiveDayWeather(fiveDay) {
     day0Div.appendChild(temp0);
     day0Div.appendChild(fiveWindspeed0);
     day0Div.appendChild(fiveHumidity0);
-
 
     date1Div.appendChild(date1);
     fiveWeatherIconDiv1.appendChild(img1);
@@ -253,57 +254,32 @@ function renderFiveDayWeather(fiveDay) {
     day4Div.appendChild(fiveHumidity4);
 }
 
-
-
 // show searched cities
-// showing the list but the links are only going to whatever was the last search
-
-// let savedCities = document.getElementById('saved-cities');
-// let lastSearch = [];
-
-// function saveSearches() {
-
-//     if (localStorage.getItem('savedCities') === null) {
-//         localStorage.setItem('savedCities', []);
-//     } else {
-//         lastSearch = JSON.parse(localStorage.getItem('savedCities'));
-//     }
-//     lastSearch.unshift([{
-//         'city': city,
-//     }]);
-//     if (lastSearch.length >= 15) {
-//         lastSearch.pop();
-//     }
-//     localStorage.setItem('savedCities', JSON.stringify(lastSearch));
-// }
-// saveSearches();
-
-// function printSearches() {
-//     for (each of lastSearch) {
-//         let search = document.createElement('p');
-//         searchLink = document.createElement('a');
-//         searchLink.textContent = each[0].cityName;
-//         searchLink.href = cityEntered(each[0].cityName);
-//         // searchLink.href = cityEntered(each[0].cityName);
-//         search.append(searchLink);
-//         savedCities.append(search);
-//     }
-// }
-
-// printSearches();
-
-// other way to show search history, need to play with it
-
-// var searchHistory = (localStorage.searchHistory) ? JSON.parse(localStorage.searchHistory) : [];
-// document.querySelector(".search").addEventListener("click", () => {
-//   searchHistory.push(document.querySelector(".usercity").value);
-//   localStorage.searchHistory = JSON.stringify(searchHistory);
-// });
-// document.querySelector(".usercity").addEventListener("focus", () => {
-//   var data = document.querySelector("datalist#searchdata");
-//   data.innerHTML = "";
-//   searchHistory.forEach((search) => {
-//     data.innerHTML = "<option>" + data.innerHTML;
-//     data.querySelector("option").innerText = search;
-//   });
-// });
+let savedCities = document.getElementById('saved-cities');
+let lastSearch = [];
+function saveSearches() {
+    if (localStorage.getItem('savedCities') == null) {
+        localStorage.setItem('savedCities', []);
+    } else {
+        lastSearch = JSON.parse(localStorage.getItem('savedCities'));
+    }
+    lastSearch.unshift([{
+        'city': searchedCity,
+    }]);
+    if (lastSearch.length > 15) {
+        lastSearch.pop();
+    }
+    localStorage.setItem('savedCities', JSON.stringify(lastSearch));
+}
+function printSearches() {
+    for (each of lastSearch) {
+        let search = document.createElement('p');
+        searchLink = document.createElement('a');
+        searchLink.textContent = each[0].city;
+        searchLink.href = 'index.html?q=' + each[0].city;
+        search.append(searchLink);
+        savedCities.append(search);
+    }
+}
+saveSearches();
+printSearches();
