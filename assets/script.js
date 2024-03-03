@@ -36,7 +36,8 @@ cityForm.addEventListener("submit", cityEntered);
 //     let coordinates = (await fetch(convertCity)).json();
 //     return coordinates;
 // };
-// get current weather
+
+//get current weatehr api and get coordinates that way
 
 async function getCurrentWeather(city) {
     let cityUsed = city.replace(/\s/g, "%20");
@@ -272,7 +273,7 @@ function saveSearches() {
         lastSearch = JSON.parse(localStorage.getItem('savedCities'));
     }
     lastSearch.unshift([{
-        'city': searchedCity,
+        'citySearchAgain': searchedCity,
     }]);
     if (lastSearch.length > 15) {
         lastSearch.pop();
@@ -283,10 +284,17 @@ function printSearches() {
     for (each of lastSearch) {
         let search = document.createElement('p');
         searchLink = document.createElement('a');
-        searchLink.textContent = each[0].city;
-        searchLink.href = 'index.html?q=' + each[0].city;
+        let cityAgain = each[0].citySearchAgain;
+        searchLink.textContent = cityAgain;
+        searchLink.href = 'index.html?q=' + cityAgain;
+        // addEventListener("searchLink.href",getCurrentWeather(cityAgain));
         search.append(searchLink);
         savedCities.append(search);
+        console.log("cityAgain: " + cityAgain);
+        // function clickPrevious(cityAgain) {
+        //     ;
+        // }
+        
     }
 }
 saveSearches();
