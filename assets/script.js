@@ -32,7 +32,7 @@ cityForm.addEventListener("submit", cityEntered);
 
 async function getGeoCode(city) {
     let cityUsed = city.replace(/\s/g, "%20");
-    let convertCity = "https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/geo/1.0/direct?q=" + cityUsed + "&limit=5&appid=" + WeatherAPIKey;
+    let convertCity = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityUsed + "&limit=5&appid=" + WeatherAPIKey;
     let coordinates = (await fetch(convertCity)).json();
     return coordinates;
 };
