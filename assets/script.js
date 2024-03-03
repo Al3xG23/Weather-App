@@ -14,32 +14,34 @@ let todaysDate = month + "/" + day + "/" + year;
 async function cityEntered(event) {
     event.preventDefault();
     let userCity = cityForm.usercity.value;
-    const coordinates = await getGeoCode(userCity);
+    // const coordinates = await getGeoCode(userCity);
     // console.log(coordinates);
-    let latitude = coordinates[0].lat;
-    let longitude = coordinates[0].lon;
-    const current = await getCurrentWeather(latitude, longitude);
-    // console.log(current);
-    renderWeather(current);
-    const fiveDay = await getFiveDay(latitude, longitude);
+    const current = await getCurrentWeather(userCity);
+    console.log(current);
+    renderWeather(current);    
+    const fiveDay = await getFiveDay(current);
     // console.log(fiveDay);
     renderFiveDayWeather(fiveDay);
-    localStorage.setItem("city", userCity);      
+    localStorage.setItem("city", userCity);    
+    return current;
 };
 cityForm.addEventListener("submit", cityEntered);
 
+// this didn't work becasue github pages refused to direct to http api call, had to work around
 // convert city to latitude and longitude coordinates
 
-async function getGeoCode(city) {
-    let cityUsed = city.replace(/\s/g, "%20");
-    let convertCity = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityUsed + "&limit=5&appid=" + WeatherAPIKey;
-    let coordinates = (await fetch(convertCity)).json();
-    return coordinates;
-};
+// async function getGeoCode(city) {
+// let cityUsed = city.replace(/\s/g, "%20");
+//     let convertCity = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityUsed + "&limit=5&appid=" + WeatherAPIKey;
+//     let coordinates = (await fetch(convertCity)).json();
+//     return coordinates;
+// };
 // get current weather
 
-async function getCurrentWeather(latitude, longitude) {
-    let getCurrent = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + WeatherAPIKey + "&units=imperial";
+async function getCurrentWeather(city) {
+    let cityUsed = city.replace(/\s/g, "%20");
+    let getCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + cityUsed + "&appid=" + WeatherAPIKey + "&units=imperial";
+    // console.log(getCurrent);
     const weatherNow = (await fetch(getCurrent)).json();
     return weatherNow;
 };
@@ -48,7 +50,6 @@ async function getCurrentWeather(latitude, longitude) {
 
 function renderWeather(current) {
     let currentWeatherDiv = document.getElementById("current-weather");
-
     let cityNameDiv = document.getElementById("city-name");
     let cityName = document.createElement("p");
     let city = current.name;
@@ -57,7 +58,7 @@ function renderWeather(current) {
     cityName.style.marginBottom = "15px";
     cityName.style.fontSize = "xx-large";
     cityName.style.fontWeight = "bold";
-
+    
     // show image
     let weatherIconDiv = document.getElementById("weather-icon");
     let icon = current.weather[0].icon;
@@ -67,22 +68,22 @@ function renderWeather(current) {
     img.style.width = "65px";
     img.style.height = "65px";
     img.style.marginLeft = "20px";
-
+    
     let description = document.createElement("p");
-    description.textContent = "Conditions: " + current.weather[0].description;    
-
+    description.textContent = "Conditions: " + current.weather[0].description;
+    
     let temperature = document.createElement("p");
     temperature.textContent = "Temperature: " + current.main.temp + "°F";
-
+    
     let feelsLike = document.createElement("p");
     feelsLike.textContent = "Feels Like: " + current.main.feels_like + "°F";
-
+    
     let windspeed = document.createElement("p");
     windspeed.textContent = "Wind: " + current.wind.speed + " MPH";
-
+    
     let humidity = document.createElement("p");
     humidity.textContent = "Humidity: " + current.main.humidity + "%";
-
+    
     cityNameDiv.appendChild(cityName);
     weatherIconDiv.appendChild(img);
     currentWeatherDiv.appendChild(description);
@@ -90,15 +91,22 @@ function renderWeather(current) {
     currentWeatherDiv.appendChild(feelsLike);
     currentWeatherDiv.appendChild(windspeed);
     currentWeatherDiv.appendChild(humidity);
+    
     localStorage.setItem("searchedCity", city);
 };
 let searchedCity = localStorage.getItem("searchedCity");
-console.log(searchedCity);
+
+// console.log(searchedCity);
+
 // get five day weather
 
-async function getFiveDay(latitude, longitude) {
+async function getFiveDay(current) {
+    let latitude = current.coord.lat;
+    console.log(latitude);
+    let longitude = current.coord.lon;
+    console.log(longitude);    
     let getFive = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + WeatherAPIKey + "&units=imperial";
-    // console.log(getFive);
+    console.log(getFive);   
     const weatherFiveDay = (await fetch(getFive)).json();
     return weatherFiveDay;
 };
@@ -189,7 +197,7 @@ function renderFiveDayWeather(fiveDay) {
     img3.src = iconUrl3;
     img3.style.width = "100px";
     img3.style.height = "100px";
-    
+
     let temp3 = document.createElement("p");
     temp3.textContent = "Temperature: " + fiveDay.list[23].main.temp + "°F";
 
@@ -221,7 +229,7 @@ function renderFiveDayWeather(fiveDay) {
 
     let fiveHumidity4 = document.createElement("p");
     fiveHumidity4.textContent = "Humidity: " + fiveDay.list[32].main.humidity + "%";
-    
+
     // render all info
     date0Div.appendChild(date0);
     fiveWeatherIconDiv0.appendChild(img0);
