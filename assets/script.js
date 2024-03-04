@@ -1,6 +1,8 @@
+let leroy = document.querySelector("#tacocat")
 const WeatherAPIKey = "f714786d6279ec80d8a23eb995a5fb8e";
 const cityForm = document.getElementById("city-form");
 const currentWeather = document.getElementById("current-weather");
+const cityNameDiv = document.getElementById("city-name");
 const date = new Date();
 let day = date.getDate();
 let month = date.getMonth() + 1;
@@ -11,25 +13,31 @@ let todaysDate = month + "/" + day + "/" + year;
 // only grabbing the first city but would like to give the user the option to select the city they want if it's the same name but different location
 // need to clear pouplated after search so it doesn't overlap the second search
 
-async function cityEntered(event) {
-    event.preventDefault();
-    let userCity = cityForm.usercity.value;
+async function cityEntered(event, city) {
+    let userCity;
+    if (event) {
+        event.preventDefault();
+        console.log(event);
+        userCity = cityForm.usercity.value            
+    } else {
+        console.log(city);
+        userCity = city;
+    }
     // const coordinates = await getGeoCode(userCity);
     // console.log(coordinates);
     const current = await getCurrentWeather(userCity);
     console.log(current);
-    renderWeather(current);    
+    renderWeather(current);
     const fiveDay = await getFiveDay(current);
     // console.log(fiveDay);
     renderFiveDayWeather(fiveDay);
-    localStorage.setItem("city", userCity);    
+    localStorage.setItem("city", userCity);
     return current;
 };
 cityForm.addEventListener("submit", cityEntered);
 
 // this didn't work becasue github pages refused to direct to http api call, had to work around
 // convert city to latitude and longitude coordinates
-
 // async function getGeoCode(city) {
 // let cityUsed = city.replace(/\s/g, "%20");
 //     let convertCity = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityUsed + "&limit=5&appid=" + WeatherAPIKey;
@@ -41,8 +49,7 @@ cityForm.addEventListener("submit", cityEntered);
 
 async function getCurrentWeather(city) {
     let cityUsed = city.replace(/\s/g, "%20");
-    let getCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + cityUsed + "&appid=" + WeatherAPIKey + "&units=imperial";
-    // console.log(getCurrent);
+    let getCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + cityUsed + "&appid=" + WeatherAPIKey + "&units=imperial";    
     const weatherNow = (await fetch(getCurrent)).json();
     return weatherNow;
 };
@@ -50,8 +57,6 @@ async function getCurrentWeather(city) {
 // show current weather city name, the date, an icon representation of weather conditions, the temperature, the humidity, and the wind speed
 
 function renderWeather(current) {
-    let currentWeatherDiv = document.getElementById("current-weather");
-    let cityNameDiv = document.getElementById("city-name");
     let cityName = document.createElement("p");
     let city = current.name;
     cityName.textContent = city + " (" + todaysDate + ")";
@@ -59,7 +64,7 @@ function renderWeather(current) {
     cityName.style.marginBottom = "15px";
     cityName.style.fontSize = "xx-large";
     cityName.style.fontWeight = "bold";
-    
+
     // show image
     let weatherIconDiv = document.getElementById("weather-icon");
     let icon = current.weather[0].icon;
@@ -69,35 +74,33 @@ function renderWeather(current) {
     img.style.width = "65px";
     img.style.height = "65px";
     img.style.marginLeft = "20px";
-    
+
     let description = document.createElement("p");
     description.textContent = "Conditions: " + current.weather[0].description;
-    
+
     let temperature = document.createElement("p");
     temperature.textContent = "Temperature: " + current.main.temp + "°F";
-    
+
     let feelsLike = document.createElement("p");
     feelsLike.textContent = "Feels Like: " + current.main.feels_like + "°F";
-    
+
     let windspeed = document.createElement("p");
     windspeed.textContent = "Wind: " + current.wind.speed + " MPH";
-    
+
     let humidity = document.createElement("p");
     humidity.textContent = "Humidity: " + current.main.humidity + "%";
-    
+
     cityNameDiv.appendChild(cityName);
     weatherIconDiv.appendChild(img);
-    currentWeatherDiv.appendChild(description);
-    currentWeatherDiv.appendChild(temperature);
-    currentWeatherDiv.appendChild(feelsLike);
-    currentWeatherDiv.appendChild(windspeed);
-    currentWeatherDiv.appendChild(humidity);
-    
+    currentWeather.appendChild(description);
+    currentWeather.appendChild(temperature);
+    currentWeather.appendChild(feelsLike);
+    currentWeather.appendChild(windspeed);
+    currentWeather.appendChild(humidity);
+
     localStorage.setItem("searchedCity", city);
 };
 let searchedCity = localStorage.getItem("searchedCity");
-
-// console.log(searchedCity);
 
 // get five day weather
 
@@ -105,15 +108,16 @@ async function getFiveDay(current) {
     let latitude = current.coord.lat;
     console.log(latitude);
     let longitude = current.coord.lon;
-    console.log(longitude);    
+    console.log(longitude);
     let getFive = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + WeatherAPIKey + "&units=imperial";
-    console.log(getFive);   
+    console.log(getFive);
     const weatherFiveDay = (await fetch(getFive)).json();
     return weatherFiveDay;
 };
 
 // show five day forecast the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
 // I tried to do a loop for all this but abandoned that for the moment
+
 function renderFiveDayWeather(fiveDay) {
 
     // day 1
@@ -264,6 +268,7 @@ function renderFiveDayWeather(fiveDay) {
 }
 
 // show searched cities
+
 let savedCities = document.getElementById('saved-cities');
 let lastSearch = [];
 function saveSearches() {
@@ -282,19 +287,13 @@ function saveSearches() {
 }
 function printSearches() {
     for (each of lastSearch) {
-        let search = document.createElement('p');
-        searchLink = document.createElement('a');
+        let search = document.createElement('button');
         let cityAgain = each[0].citySearchAgain;
-        searchLink.textContent = cityAgain;
-        searchLink.href = 'index.html?q=' + cityAgain;
-        // addEventListener("searchLink.href",getCurrentWeather(cityAgain));
-        search.append(searchLink);
+        search.textContent = cityAgain;
+        search.setAttribute("onclick", `cityEntered(null, "${cityAgain}")`);        
         savedCities.append(search);
         console.log("cityAgain: " + cityAgain);
-        // function clickPrevious(cityAgain) {
-        //     ;
-        // }
-        
+
     }
 }
 saveSearches();
