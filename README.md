@@ -27,3 +27,12 @@ THEN I am presented with a 5-day forecast that displays the date, an icon repres
 WHEN I click on a city in the search history
 
 THEN I am again presented with current and future conditions for that city
+
+## Page
+
+https://al3xg23.github.io/Weather-App/index.html?q=
+
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
+

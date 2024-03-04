@@ -27,9 +27,11 @@
     padding-left: 50px; 
     padding-right: 50px; 
     padding-top: 5px; 
-    padding-bottom: 5px; 
+    padding-bottom: 5px;
+    border-radius:5px; 
     margin-top: 18px;
     margin-left: 60px;
+    background-color: lightblue;
 }
 
 #current-weather-shell {

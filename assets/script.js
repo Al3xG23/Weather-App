@@ -280,7 +280,7 @@ function saveSearches() {
     lastSearch.unshift([{
         'citySearchAgain': searchedCity,
     }]);
-    if (lastSearch.length > 15) {
+    if (lastSearch.length > 11) {
         lastSearch.pop();
     }
     localStorage.setItem('savedCities', JSON.stringify(lastSearch));
@@ -290,6 +290,11 @@ function printSearches() {
         let search = document.createElement('button');
         let cityAgain = each[0].citySearchAgain;
         search.textContent = cityAgain;
+        search.style.margin = "5px";
+        search.style.borderRadius = "5px";
+        search.style.padding = "5px";
+        search.style.width = "255px";
+        search.style.backgroundColor = "lightblue";
         search.setAttribute("onclick", `cityEntered(null, "${cityAgain}")`);        
         savedCities.append(search);
         console.log("cityAgain: " + cityAgain);
