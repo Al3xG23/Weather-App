@@ -1,4 +1,3 @@
-let leroy = document.querySelector("#tacocat")
 const WeatherAPIKey = "f714786d6279ec80d8a23eb995a5fb8e";
 const cityForm = document.getElementById("city-form");
 const currentWeather = document.getElementById("current-weather");
@@ -18,7 +17,7 @@ async function cityEntered(event, city) {
     if (event) {
         event.preventDefault();
         console.log(event);
-        userCity = cityForm.usercity.value            
+        userCity = cityForm.usercity.value
     } else {
         console.log(city);
         userCity = city;
@@ -49,14 +48,16 @@ cityForm.addEventListener("submit", cityEntered);
 
 async function getCurrentWeather(city) {
     let cityUsed = city.replace(/\s/g, "%20");
-    let getCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + cityUsed + "&appid=" + WeatherAPIKey + "&units=imperial";    
+    let getCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + cityUsed + "&appid=" + WeatherAPIKey + "&units=imperial";
     const weatherNow = (await fetch(getCurrent)).json();
     return weatherNow;
 };
 
 // show current weather city name, the date, an icon representation of weather conditions, the temperature, the humidity, and the wind speed
-
+let currentWeatherShell = document.getElementById("current-weather-shell");
 function renderWeather(current) {
+    currentWeatherShell.innerHTML = "<div id='current-weather'style='margin-left: 10px;'><div id='weather-title' class='d-flex flex-row'><div id='city-name'></div><div id='weather-icon'></div></div></div>";
+
     let cityName = document.createElement("p");
     let city = current.name;
     cityName.textContent = city + " (" + todaysDate + ")";
@@ -295,7 +296,7 @@ function printSearches() {
         search.style.padding = "5px";
         search.style.width = "255px";
         search.style.backgroundColor = "lightblue";
-        search.setAttribute("onclick", `cityEntered(null, "${cityAgain}")`);        
+        search.setAttribute("onclick", `cityEntered(null, "${cityAgain}")`);
         savedCities.append(search);
         console.log("cityAgain: " + cityAgain);
 
