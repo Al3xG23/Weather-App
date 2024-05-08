@@ -16,16 +16,16 @@ async function cityEntered(event, city) {
     let userCity;
     if (event) {
         event.preventDefault();
-        console.log(event);
+        // console.log(event);
         userCity = cityForm.usercity.value
     } else {
-        console.log(city);
+        // console.log(city);
         userCity = city;
     }
     // const coordinates = await getGeoCode(userCity);
     // console.log(coordinates);
     const current = await getCurrentWeather(userCity);
-    console.log(current);
+    // console.log(current);
     renderWeather(current);
     const fiveDay = await getFiveDay(current);
     // console.log(fiveDay);
@@ -107,11 +107,11 @@ let searchedCity = localStorage.getItem("searchedCity");
 
 async function getFiveDay(current) {
     let latitude = current.coord.lat;
-    console.log(latitude);
+    // console.log(latitude);
     let longitude = current.coord.lon;
-    console.log(longitude);
+    // console.log(longitude);
     let getFive = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + WeatherAPIKey + "&units=imperial";
-    console.log(getFive);
+    // console.log(getFive);
     const weatherFiveDay = (await fetch(getFive)).json();
     return weatherFiveDay;
 };
@@ -298,7 +298,7 @@ function printSearches() {
         search.style.backgroundColor = "lightblue";
         search.setAttribute("onclick", `cityEntered(null, "${cityAgain}")`);
         savedCities.append(search);
-        console.log("cityAgain: " + cityAgain);
+        // console.log("cityAgain: " + cityAgain);
 
     }
 }
