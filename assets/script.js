@@ -9,8 +9,8 @@ let year = date.getFullYear();
 let todaysDate = month + "/" + day + "/" + year;
 
 // get user city input
-// only grabbing the first city but would like to give the user the option to select the city they want if it's the same name but different location
-// need to clear pouplated after search so it doesn't overlap the second search
+// TODO only grabbing the first city but would like to give the user the option to select the city they want if it's the same name but different location
+// TODO need to clear populated after search so it doesn't overlap the second search
 
 async function cityEntered(event, city) {
     let userCity;
@@ -56,11 +56,11 @@ async function getCurrentWeather(city) {
 // show current weather city name, the date, an icon representation of weather conditions, the temperature, the humidity, and the wind speed
 let currentWeatherShell = document.getElementById("current-weather-shell");
 function renderWeather(current) {
-    currentWeatherShell.innerHTML = "<div id='current-weather'style='margin-left: 10px;'><div id='weather-title' class='d-flex flex-row'><div id='city-name'></div><div id='weather-icon'></div></div></div>";
-
+    // currentWeatherShell.innerHTML = "<div id='current-weather'style='margin-left: 10px;'><div id='weather-title' class='d-flex flex-row'><div id='city-name'></div><div id='weather-icon'></div></div></div>";
+    console.log(current);
     let cityName = document.createElement("p");
     let city = current.name;
-    cityName.textContent = city + " (" + todaysDate + ")";
+    cityName.innerText = city + " (" + todaysDate + ")";
     cityName.style.marginTop = "15px";
     cityName.style.marginBottom = "15px";
     cityName.style.fontSize = "xx-large";
