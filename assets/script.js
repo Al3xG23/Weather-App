@@ -10,9 +10,9 @@ let todaysDate = month + "/" + day + "/" + year;
 
 // get user city input
 // TODO only grabbing the first city but would like to give the user the option to select the city they want if it's the same name but different location
-// TODO need to clear populated after search so it doesn't overlap the second search
 
 async function cityEntered(event, city) {
+
     let userCity;
     if (event) {
         event.preventDefault();
@@ -22,8 +22,10 @@ async function cityEntered(event, city) {
         // console.log(city);
         userCity = city;
     }
+    
     // const coordinates = await getGeoCode(userCity);
     // console.log(coordinates);
+
     const current = await getCurrentWeather(userCity);
     // console.log(current);
     renderWeather(current);
@@ -31,9 +33,12 @@ async function cityEntered(event, city) {
     // console.log(fiveDay);
     renderFiveDayWeather(fiveDay);
     localStorage.setItem("city", userCity);
+    
     return current;
 };
-cityForm.addEventListener("submit", cityEntered);
+cityForm.addEventListener("submit", (event) => {
+    cityEntered(event);
+});
 
 // this didn't work becasue github pages refused to direct to http api call, had to work around
 // convert city to latitude and longitude coordinates
@@ -44,9 +49,9 @@ cityForm.addEventListener("submit", cityEntered);
 //     return coordinates;
 // };
 
-//get current weatehr api and get coordinates that way
-
+//get current weather api and get coordinates that way
 async function getCurrentWeather(city) {
+
     let cityUsed = city.replace(/\s/g, "%20");
     let getCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + cityUsed + "&appid=" + WeatherAPIKey + "&units=imperial";
     const weatherNow = (await fetch(getCurrent)).json();
@@ -55,8 +60,13 @@ async function getCurrentWeather(city) {
 
 // show current weather city name, the date, an icon representation of weather conditions, the temperature, the humidity, and the wind speed
 let currentWeatherShell = document.getElementById("current-weather-shell");
+
 function renderWeather(current) {
-    // currentWeatherShell.innerHTML = "<div id='current-weather'style='margin-left: 10px;'><div id='weather-title' class='d-flex flex-row'><div id='city-name'></div><div id='weather-icon'></div></div></div>";
+    currentWeatherShell.innerHTML = "<div id='current-weather'style='margin-left: 10px;'><div id='weather-title' class='d-flex flex-row'><div id='city-name'></div><div id='weather-icon'></div></div></div>";
+
+    let cityNameDiv = document.getElementById("city-name");
+    let currentWeather = document.getElementById("current-weather");
+
     console.log(current);
     let cityName = document.createElement("p");
     let city = current.name;
@@ -100,11 +110,11 @@ function renderWeather(current) {
     currentWeather.appendChild(humidity);
 
     localStorage.setItem("searchedCity", city);
+
 };
 let searchedCity = localStorage.getItem("searchedCity");
 
 // get five day weather
-
 async function getFiveDay(current) {
     let latitude = current.coord.lat;
     // console.log(latitude);
@@ -117,9 +127,13 @@ async function getFiveDay(current) {
 };
 
 // show five day forecast the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
-// I tried to do a loop for all this but abandoned that for the moment
+let fiveDayShell = document.getElementById("five-day");
+
+// TODO I tried to do a loop for all this but abandoned that for the moment
+// TODO get better 5 day forecast, sometimes the days are the same based on the time of day
 
 function renderFiveDayWeather(fiveDay) {
+    fiveDayShell.innerHTML = '<div class="row"><div class="col"><div class="card"style="height: 245px; margin-top: 15px; margin-left: 15px; background-color: rgb(241, 248, 184);"><div id="day0" class="card-body"><div id="date0"></div><div id="five-weather-icon0" style="text-align: center;"></div></div></div></div><div class="col"><div class="card"style="height: 245px; margin-top: 15px; background-color: rgb(217, 240, 173);"><div id="day1" class="card-body"><div id="date1"></div><div id="five-weather-icon1" style="text-align: center;"></div></div></div></div><div class="col"><div class="card"style="height: 245px; margin-top: 15px; background-color: rgb(184, 237, 219)"><div id="day2" class="card-body"><div id="date2"></div><div id="five-weather-icon2" style="text-align: center;"></div></div></div></div><div class="col"><div class="card"style="height: 245px; margin-top: 15px; background-color: rgb(193, 243, 244)"><div id="day3" class="card-body"><div id="date3"></div><div id="five-weather-icon3" style="text-align: center;"></div></div></div></div><div class="col"><div class="card"style="height: 245px; margin-top: 15px; margin-right: 15px; background-color: rgb(177, 221, 235);"><div id="day4" class="card-body"><div id="date4"></div><div id="five-weather-icon4" style="text-align: center;"></div></div></div></div></div>';
 
     // day 1
     let day0Div = document.getElementById("day0");
@@ -266,10 +280,10 @@ function renderFiveDayWeather(fiveDay) {
     day4Div.appendChild(temp4);
     day4Div.appendChild(fiveWindspeed4);
     day4Div.appendChild(fiveHumidity4);
+
 }
 
 // show searched cities
-
 let savedCities = document.getElementById('saved-cities');
 let lastSearch = [];
 function saveSearches() {
@@ -287,20 +301,39 @@ function saveSearches() {
     localStorage.setItem('savedCities', JSON.stringify(lastSearch));
 }
 function printSearches() {
-    for (each of lastSearch) {
-        let search = document.createElement('button');
+
+    for (let each of lastSearch) {
         let cityAgain = each[0].citySearchAgain;
-        search.textContent = cityAgain;
-        search.style.margin = "5px";
-        search.style.borderRadius = "5px";
-        search.style.padding = "5px";
-        search.style.width = "255px";
-        search.style.backgroundColor = "lightblue";
-        search.setAttribute("onclick", `cityEntered(null, "${cityAgain}")`);
-        savedCities.append(search);
+        // my code 
+        // let search = document.createElement('button');
+        //     search.textContent = cityAgain;
+        //     search.style.margin = "5px";
+        //     search.style.borderRadius = "5px";
+        //     search.style.padding = "5px";
+        //     search.style.width = "183px";
+        //     search.style.backgroundColor = "lightblue";
+        //     search.setAttribute("onclick", `cityEntered(null, "${cityAgain}")`);
+        //     savedCities.append(search);
         // console.log("cityAgain: " + cityAgain);
+
+        // chat code changes fixed my issue of repeating the city name
+        let cityExists = Array.from(savedCities.getElementsByTagName('button')).find(button => button.textContent === cityAgain);
+
+        if (!cityExists) {
+            let search = document.createElement('button');
+            search.textContent = cityAgain;
+            search.style.margin = "5px";
+            search.style.borderRadius = "5px";
+            search.style.padding = "5px";
+            search.style.width = "183px";
+            search.style.backgroundColor = "lightblue";
+            search.setAttribute("onclick", `cityEntered(null, "${cityAgain}")`);
+            savedCities.append(search);
+            // console.log("cityAgain: " + cityAgain);
+        }
 
     }
 }
+
 saveSearches();
 printSearches();
