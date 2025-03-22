@@ -12,11 +12,12 @@
 
 #search-side {
    border-bottom: 5px solid #458b74;
-   background-color: rgb(241, 248, 184);    
+   background-color: rgb(241, 248, 184);
   }
 
 #search1 {
-    border-bottom: 5px solid #458b74;    
+    search-name: --s1;
+    border-bottom: 5px solid #458b74;       
    }
 
 #city-entered {
@@ -30,8 +31,12 @@
     padding-bottom: 5px;
     border-radius:5px; 
     margin-top: 18px;
-    margin-left: 60px;
+    /* margin-left: 60px;  */
     background-color: lightblue;
+    position: absolute;
+    position-search1: --s1;
+    position-area: bottom center;
+
 }
 
 #current-weather-shell {
