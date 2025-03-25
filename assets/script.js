@@ -322,10 +322,12 @@ function printSearches() {
         if (!cityExists) {
             let search = document.createElement('button');
             search.textContent = cityAgain;
-            search.style.margin = "5px";
+            search.style.margin = "5px auto";
             search.style.borderRadius = "5px";
             search.style.padding = "5px";
-            search.style.width = "183px";
+            search.style.paddingLeft = "50px";
+            search.style.paddingRight = "50px";
+            search.style.width = "100%";
             search.style.backgroundColor = "lightblue";
             search.setAttribute("onclick", `cityEntered(null, "${cityAgain}")`);
             savedCities.append(search);

@@ -31,12 +31,10 @@
     padding-bottom: 5px;
     border-radius:5px; 
     margin-top: 18px;
-    /* margin-left: 60px;  */
     background-color: lightblue;
     position: absolute;
     position-search1: --s1;
     position-area: bottom center;
-
 }
 
 #current-weather-shell {
@@ -46,4 +44,47 @@
 #footer {    
     background: linear-gradient(.25turn, yellow, 15%, lightblue);
     justify-content: center;
+}
+
+#input-and-result {}
+#five-day {}
+#saved-cities {}
+
+@media screen and (max-width: 992px) {
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 576px) {
+    #search-side {
+        display: flex;
+        padding-bottom: 2%;
+    }
+    #search1 {
+        padding-left: 50px; 
+        padding-right: 50px; 
+        padding-top: 5px; 
+        padding-bottom: 5px;
+        border-bottom: transparent;         
+    }
+
+    #saved-cities {
+        padding-left: 50px; 
+        padding-right: 50px; 
+        padding-top: 80px; 
+        padding-bottom: 5px;
+    }
+    
+    #input-and-result {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 2%;
+        margin-bottom: 2%;
+    }
+
+    #five-day {
+        display: flex;
+        flex-wrap: wrap;
+    }
 }
